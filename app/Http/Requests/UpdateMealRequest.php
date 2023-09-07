@@ -21,10 +21,16 @@ class UpdateMealRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rule = [
             'title' => 'required|string|max:50',
             'category_id' => 'required',
             'body' => 'required|string|max:2000',
         ];
+
+        if ($this->file('image')) {
+            $rule['image'] = 'required|file|image|mimes:png,jpg';
+        }
+
+        return $rule;
     }
 }
