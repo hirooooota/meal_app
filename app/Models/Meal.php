@@ -26,6 +26,11 @@ class Meal extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
     public function getImageUrlAttribute()
     {
         return Storage::url($this->image_path);
