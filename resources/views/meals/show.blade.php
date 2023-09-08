@@ -31,6 +31,25 @@
             <img src="{{ $meal->image_url }}" alt="" class="mb-4">
             <p class="text-gray-700 text-base">{!! nl2br(e($meal->body)) !!}</p>
         </article>
+
+        @auth
+            @if (!$is_favorited_by_logged_in_user)
+                <form action="{{ route('meals.like', $meal) }}" method="post">
+                    @csrf
+                    <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-30 mr-2">お気に入り</button>
+                </form>
+            @else
+                <form action="{{ route('meals.unlike', $meal) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-40 mr-2">お気に入り削除</button>
+                </form>
+            @endif
+            <p class="text-black-900 font-bold">お気に入り数：{{ $meal->likes->count() }}</p>
+        @endauth
+
         <div class="flex flex-row text-center my-4">
             @can('update', $meal)
                 <a href="{{ route('meals.edit', $meal) }}"

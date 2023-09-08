@@ -35,4 +35,8 @@ Route::resource('meals', MealController::class)
 Route::resource('meals', MealController::class)
     ->only(['show', 'index']);
 
-require __DIR__.'/auth.php';
+Route::post('/meals/{meal}/like', [MealController::class, 'like'])->name('meals.like');
+
+Route::delete('/meals/{meal}/unlike', [MealController::class, 'unlike'])->name('meals.unlike');
+
+require __DIR__ . '/auth.php';

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Meal;
+use App\Models\Like;
 use App\Http\Requests\StoreMealRequest;
 use App\Http\Requests\UpdateMealRequest;
 use Illuminate\Support\Facades\DB;
@@ -72,8 +73,12 @@ class MealController extends Controller
     public function show(string $id)
     {
         $meal = Meal::find($id);
+        $is_favorited_by_logged_in_user = Like::where('user_id', auth()->id())
+            ->where('meal_id', $meal->id)
+            ->exists();
 
-        return view('meals.show', compact('meal'));
+
+        return view('meals.show', compact('meal', 'is_favorited_by_logged_in_user'));
     }
 
     /**
@@ -172,5 +177,25 @@ class MealController extends Controller
     private static function createFileName($file)
     {
         return date('YmdHis') . '_' . $file->getClientOriginalName();
+    }
+
+    public function like(Meal $meal)
+    {
+        $like = new Like();
+        $like->user_id = auth()->id();
+        $like->meal_id = $meal->id;
+        $like->save();
+
+        return redirect()->back();
+    }
+
+    public function unlike(Meal $meal)
+    {
+        $like = Like::where('user_id', auth()->id())->where('meal_id', $meal->id)->first();
+        if ($like) {
+            $like->delete();
+        }
+
+        return redirect()->back();
     }
 }
