@@ -25,6 +25,7 @@ class StoreMealRequest extends FormRequest
             'title' => 'required|string|max:50',
             'category_id' => 'required',
             'body' => 'required|string|max:2000',
+            'image' => 'required|file|image|mimes:jpg,png',
         ];
     }
 }
