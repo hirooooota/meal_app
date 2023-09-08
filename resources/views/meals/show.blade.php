@@ -33,7 +33,7 @@
         </article>
 
         @auth
-            @if (!$isFavoritedByLoggedInUser)
+            @if (!$is_favorited_by_logged_in_user)
                 <form action="{{ route('meals.like', $meal) }}" method="post">
                     @csrf
                     <button type="submit"

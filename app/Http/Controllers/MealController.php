@@ -73,12 +73,12 @@ class MealController extends Controller
     public function show(string $id)
     {
         $meal = Meal::find($id);
-        $isFavoritedByLoggedInUser = Like::where('user_id', auth()->id())
+        $is_favorited_by_logged_in_user = Like::where('user_id', auth()->id())
             ->where('meal_id', $meal->id)
             ->exists();
 
 
-        return view('meals.show', compact('meal', 'isFavoritedByLoggedInUser'));
+        return view('meals.show', compact('meal', 'is_favorited_by_logged_in_user'));
     }
 
     /**
